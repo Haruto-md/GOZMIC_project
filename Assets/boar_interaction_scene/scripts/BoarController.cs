@@ -13,15 +13,18 @@ public class BoarController : MonoBehaviour
     [SerializeField] private float rotationSpeed;
 
     private bool isRandomWalking = false;
+    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
         var startposition_x = Random.Range(0, maximumMovingRadius - 0.5f);
         var startposition_z = Random.Range(0, maximumMovingRadius - 0.5f);
         transform.position = new Vector3(startposition_x, transform.position.y, startposition_z);
+        animator = GetComponent<Animator>();
 
         StartCoroutine("randomWalk");
         isRandomWalking = true;
+        
     }
 
     // Update is called once per frame
@@ -30,14 +33,18 @@ public class BoarController : MonoBehaviour
         var distanceToPlayer = (transform.position - player.transform.position).magnitude;
         if (percevingRadius > distanceToPlayer)
         {
+            //ÉvÉåÉCÉÑÅ[Çë®Ç¶ÇÈ
+            animator.SetBool("isWalking", false);
             StopCoroutine("randomWalk");
             isRandomWalking = false;
 
             Quaternion rot = Quaternion.LookRotation((player.transform.position - transform.position));//âÒì]ÇåvéZ
             rot = Quaternion.Slerp(transform.rotation, rot, rotationSpeed);//Ç‰Ç¡Ç≠ÇËâÒì]Ç≥ÇπÇÈÇÊÇ§Ç…ílÇéZèo
             transform.rotation = rot;//âÒì]
+            //ó£ÇÍÇƒÇ¢ÇÈÇÃÇ≈å¸Ç©Ç¡ÇƒÇ≠ÇÈÅB
             if (distanceToPlayer > minimumDistanceToPlayer)
             {
+                animator.SetBool("isWalking", true);
                 approachingTo(player.transform.position);//éwíËÇÃèÍèäÇ…à⁄ìÆ
             }
         }else if(distanceToPlayer > percevingRadius)
@@ -68,15 +75,14 @@ public class BoarController : MonoBehaviour
             float distanceFromCenter;
             do
             {
-                destination = transform.position + new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
+                destination = transform.position + new Vector3(Random.Range(-20f, 20f), 0, Random.Range(-20f, 20f));
                 distanceFromCenter = (destination - stageCenter).magnitude;
             } while (distanceFromCenter > maximumMovingRadius - 0.5f);
             
             
-        
-            Debug.Log(destination);
             while (true)
             {
+                animator.SetBool("isWalking", true);
                 Quaternion rot = Quaternion.LookRotation((destination - transform.position));//âÒì]ÇåvéZ
                 rot = Quaternion.Slerp(transform.rotation, rot, rotationSpeed);//Ç‰Ç¡Ç≠ÇËâÒì]Ç≥ÇπÇÈÇÊÇ§Ç…ílÇéZèo
                 transform.rotation = rot;//âÒì]
@@ -87,6 +93,7 @@ public class BoarController : MonoBehaviour
                 }
                 else { break; }
             }
+            animator.SetBool("isWalking", false);
             yield return new WaitForSeconds(Random.Range(0.5f,3f));
         }
     }
