@@ -12,9 +12,11 @@ public class AlbumSupervisor : MonoBehaviour
     private int count=0;
 
     // Start is called before the first frame update
-    public void Start()
+    private void Start()
     {
-;        foreach (var file in Directory.GetFiles(Application.streamingAssetsPath + "/pictures"))
+        Debug.Log(Application.persistentDataPath);
+
+        foreach (var file in Directory.GetFiles(Application.persistentDataPath + "/pictures"))
         {
             if (!file.EndsWith(".meta"))
             {
@@ -34,6 +36,7 @@ public class AlbumSupervisor : MonoBehaviour
     }
     public void refreshAlbum()
     {
+        this.Start();
         distributer.GetComponent<ExhibitionDistributer>().exhibitObjectsOnMap(frame,count%5+1);
         count++;
     }
