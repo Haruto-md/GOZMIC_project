@@ -4,7 +4,6 @@ using UnityEngine;
 public class Picture : MonoBehaviour, IExhibitable
 {
     public Sprite sprite;
-    [SerializeField] private string testPath;
     [SerializeField] private float spriteHeight;
     [SerializeField] private float spriteWidth;
     [SerializeField] private float spriteSize;
