@@ -9,10 +9,6 @@ public class Start_Stop_button : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        video.GetComponent<VideoPlayer>().Play();
-        video.GetComponent<VideoPlayer>().StepForward();
-        video.GetComponent<VideoPlayer>().StepForward();
-        video.GetComponent<VideoPlayer>().Pause();
     }
 
     private void OnMouseDown()
