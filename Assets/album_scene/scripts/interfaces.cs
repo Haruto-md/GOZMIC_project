@@ -6,5 +6,5 @@ public interface IExhibitable
 
 public interface IButtonObject
 {
-    void OnClick();
+    void OnMouseDown();
 }

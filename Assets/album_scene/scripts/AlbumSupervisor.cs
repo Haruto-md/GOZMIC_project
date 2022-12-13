@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AlbumSupervisor : MonoBehaviour
 {
-    private List<string> paths = new List<string>{ };
+    private List<string> paths;
     private GameObject[] exhibitionObjects;
     public GameObject panelPrefab;
     public GameObject frame;
@@ -14,11 +14,11 @@ public class AlbumSupervisor : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        Debug.Log(Application.persistentDataPath);
+        paths = new List<string>{ };//ファイルのpathを初期化
 
-        foreach (var file in Directory.GetFiles(Application.persistentDataPath + "/pictures"))
+        foreach (var file in Directory.GetFiles(Application.streamingAssetsPath + "/pictures"))//StreamingAssets/pictures内のファイルのpathを探索
         {
-            if (!file.EndsWith(".meta"))
+            if (!file.EndsWith(".meta"))//.metaは除外
             {
                 paths.Add(file);
             }
@@ -32,11 +32,9 @@ public class AlbumSupervisor : MonoBehaviour
             exhibitionObjects[i].gameObject.GetComponent<IExhibitable>().getData(path);
             i++;
         }
-        paths = new List<string> { };
     }
     public void refreshAlbum()
     {
-        this.Start();
         distributer.GetComponent<ExhibitionDistributer>().exhibitObjectsOnMap(frame,count%5+1);
         count++;
     }
